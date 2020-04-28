@@ -1,0 +1,295 @@
+ 
+<!-- <button type="button" (click)="generatePdf()">
+  open pdf
+</button> -->
+
+<nav class="navbar navbar-brand navbar-light by-primary d-flex justify-content-between">
+  <div class="navbar-brand mb-0 h1 text-whilte">
+    ONLINE RESUME BUILDER
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <form #resumeForm="ngForm" (ngSubmit)="resumeForm.valid" novalidate> 
+    <div class="row">
+      <div class="col-md-8">
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <h4 class="card-title d-flex align-items-center">
+              <i class="material-icons">
+                account_circle
+              </i>
+              Personal Details
+            </h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control" [(ngModel)]="resume.name" name="txtName" placeholder="Your Name"
+                  #txtName="ngModel" required>
+                  <div class="text-danger" *ngIf="lib.isCtrlValid (txtName, resumeForm)">
+                    <span *ngIf="txtName.errors['required']">
+                      Name is required.
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="form-group">
+                    <textarea class="form-control" [(ngModel)]="resume.address" name="txtAddress" rows="3"
+                    #txtAddress="ngModel" placeholder="Address" required></textarea>
+                   </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="txtPhone" [(ngModel)]="resume.contactNo" 
+                  placeholder="Contact No." #txtPhone=ngModel pattern="[0-9]{10}" required>
+                   <div class="text-danger" *ngIf="lib.isCtrlValid (txtPhone, resumeForm)">
+                    <span *ngIf="txtPhone.hasError('required')">
+                      Contact No. is required.
+                    </span>
+                    <span *ngIf="txtPhone.hasError('pattern')">
+                      Contact No. should be in 10 digits.
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group" >
+                  <input type="text" class="form-control" name="txtEmail" [(ngModel)]="resume.email"
+                  placeholder="Email id" #txtEmail=ngModel required>
+                  <div class="text-danger" *ngIf="lib.isCtrlValid (txtEmail, resumeForm)">
+                    <span *ngIf="txtEmail.errors['required']">
+                      Email is required.
+                    </span>
+                  </div>
+                </div> 
+                <div class="form-group">
+                  <input type="text" class="form-control" name="txtSprofile" [(ngModel)]="resume.socialProfile"
+                  placeholder="Social Profile" #txtSprofile=ngModel required>
+                  <div class="text-danger" *ngIf="lib.isCtrlValid (txtSprofile, resumeForm)">
+                    <span *ngIf="txtSprofile.errors['required']">
+                      Social Profile is required.
+                    </span>
+                  </div>
+                </div> 
+              </div>
+          </div>
+        </div>
+      </div>
+<!-- Skills -->
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between card-title">
+            <h4 class="d-flex align-items-center">
+              <i class="material-icons">
+                timeline
+              </i>
+              Skills
+            </h4>
+            <button class="btn btn-primary" (click)="addSkill()">+</button>
+          </div>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let s of resume.skills;let i=index">
+              <div class="form-group">
+                <input type="text" class="form-control" name="skill{{i}}" [(ngModel)]="s.value"
+                placeholder="e.g. Java / Angular / .Net " #Skil="ngModel" required
+                >
+                <div class="text-danger" *ngIf="lib.isCtrlValid (Skil, resumeForm)">
+                  <span *ngIf="Skil.errors['required']">
+                    Skil required.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between card-title">
+            <h4 class="d-flex align-items-center">
+              <i class="material-icons">
+                timeline
+              </i>
+              Experience
+            </h4>
+            <button class="btn btn-primary" (click)="addExperience()">+</button>
+          </div>
+          <div class="row" *ngFor="let ex of resume.experiences;let i=index">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input type="text" class="form-control" name="employer{{i}}"
+                [(ngModel)]="ex.employer"
+                placeholder="Employer" #Employer="ngModel" required>
+                <div class="text-danger" *ngIf="lib.isCtrlValid (Employer, resumeForm)">
+                  <span *ngIf="Employer.errors['required']">
+                    Employer required.
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-group">
+                  <textarea class="form-control" name="jobDescription{{i}}" [(ngModel)]="ex.jobDescription" rows="3"
+                      placeholder="Job Description"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <input type="text" class="form-control" name="jobTitle{{i}}"
+                [(ngModel)]="ex.jobTitle"
+                placeholder="Job Title" #JobTitle="ngModel" required >
+                <div class="text-danger" *ngIf="lib.isCtrlValid (JobTitle, resumeForm)">
+                  <span *ngIf="JobTitle.errors['required']">
+                    Job Title is required.
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="number" class="form-control" name="exInMonths{{i}}" 
+                [(ngModel)]="ex.experience" 
+                placeholder="Experience in months" #Experience="ngModel" required>
+                <div class="text-danger" *ngIf="lib.isCtrlValid (Experience, resumeForm)">
+                  <span *ngIf="Experience.errors['required']">
+                    Experience is required.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--Education  -->
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between card-title">
+            <h4 class="d-flex align-items-center">
+              <i class="material-icons">
+                school
+              </i>
+              Education
+            </h4>
+            <button class="btn btn-primary" (click)="addEducation()">
+              +
+            </button>
+          </div>
+          <div class="row" *ngFor="let ed of resume.educations;let i=index">
+            <div class="col-md-3">
+              <div class="form-group">
+                <select class="form-control" placeholder="Degree" name="degree{{i}}"
+                [(ngModel)]="ed.degree" #Degree="ngModel" required>
+                <option [value]="d" *ngFor="let d of degrees">{{d}}</option>
+              </select>
+              <div *ngIf="resumeForm.submitted && Degree.errors" class="text-error">
+                <div *ngIf="Degree.hasError('required')">
+                    Degree is required.
+                </div>
+            </div> 
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <input type="text" class="form-control" name="college{{i}}"
+                [(ngModel)]="ed.college" placeholder="School/College" 
+                #College="ngModel" required>
+                <div class="text-danger" *ngIf="lib.isCtrlValid (College, resumeForm)">
+                  <span *ngIf="College.errors['required']">
+                    College is required.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <input type="number" class="form-control" name="passingYear{{i}}"
+                [(ngModel)]="ed.passingYear"
+                placeholder="Passing Year" #PassingYear="ngModel" required>
+                <div class="text-danger" *ngIf="lib.isCtrlValid (PassingYear, resumeForm)">
+                  <span *ngIf="PassingYear.errors['required']">
+                    Passing Year is required.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <input type="number" class="form-control" name="result{{i}}"
+                [(ngModel)]="ed.percentage" placeholder="Percentage" #Percentage="ngModel" required>
+                <div class="text-danger" *ngIf="lib.isCtrlValid (Percentage, resumeForm)">
+                  <span *ngIf="Percentage.errors['required']">
+                    Percentage is required.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Other Details -->
+
+      <div class="shadow-sm card">
+        <div class="card-body">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons"> list </i>
+            Other Details
+          </h4>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <textarea type="text" class="form-control" [(ngModel)]="resume.otherDetails"
+                name="otherDetails" rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="shadow-sm card action-buttons">
+        <button (click)="generatePdf('open')"
+        class="btn btn-primary d-flex align-items-center justify-content-center">
+        <i class="material-icons">
+          picture_as_pdf
+        </i><span>Open PDF</span>
+      </button>
+      <button (click)="generatePdf('download')"
+      class="btn btn-primary d-flex align-items-center justify-content-center">
+          <i class="material-icons">
+            cloud_download
+          </i><span>Download PDF</span>
+      </button>
+      <button (click)="generatePdf('print')"
+      class="btn btn-primary d-flex align-items-center justify-content-center">
+      <i class="material-icons">
+        print
+      </i><span>Print PDF</span>
+      </button>
+
+      <button type="reset" (click)="resetForm()"
+      class="btn btn-primary d-flex align-items-center justify-content-center">
+        <i class="material-icons">
+          clear
+        </i><span>Reset</span>
+      </button>
+      </div>
+
+      <div class="card p-4">
+        <div class="form-group">
+          <label class="h4 mb-3" for="">Show your picture in Resume</label>
+            <input type="file" class="form-control-file" (change)="fileChanged($event)"
+            aria-describedby="fileHelpId">
+        </div>
+        <img *ngIf="resume.profilePic" [src]="resume.profilePic" class="img-thumbnail">
+      </div>
+    </div>
+    </div>
+  </form>
+</div>
+
+
+
